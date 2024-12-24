@@ -1,0 +1,19 @@
+{
+  "name": "jsa-webdev-kit",
+  "version": "1.0.1",  
+  "description": "A simple utility for developer",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MSaifKhan01/JSA-webdev-kit.git"
+  },
+  "keywords": ["unique id", "id generator", "webdev kit"],
+  "author": "Mohd Saif Khan",
+  "license": "MIT"
+}
