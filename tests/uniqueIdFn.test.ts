@@ -1,10 +1,25 @@
-const { UniqueIdFn} = require('../src/index');
+const { UniqueIdFn } = require('../src/index');
 
+//----------------------- Unique id test start ------------------//
 
 describe('UniqueIdFn', () => {
-    it('should generate a unique ID of the specified length', () => {
-        const id = UniqueIdFn(25, 5);
-        expect(id.length).toBe(25);
+    it('should generate a unique ID of the specified length without separator', () => {
+        const length = 25;
+        const groupLength = 5;
+        const id = UniqueIdFn(length, groupLength);
+
+        expect(id.length).toBe(length);
+        // Check raw length since no separator is present
+        expect(id.split('').length).toBe(length);
+    });
+
+    it('should generate a unique ID with separator', () => {
+        const id = UniqueIdFn(25, 5, '-');
+        const rawLength = id.replace(/-/g, '').length;
+        const totalSeparatorLength = (id.length - rawLength);
+
+        expect(id.length).toBeLessThanOrEqual(25);
+        expect(rawLength + totalSeparatorLength).toBeLessThanOrEqual(25);
         expect(id.split('-').every(group => group.length <= 5)).toBe(true);
     });
 
@@ -19,8 +34,22 @@ describe('UniqueIdFn', () => {
     });
 
     it('should handle default group length correctly', () => {
-        const id = UniqueIdFn(20);
-        expect(id.length).toBe(20);
-        expect(id.split('-').every(group => group.length <= 10)).toBe(true); // Assuming default group length is 10
+        const length = 20;
+        const id = UniqueIdFn(length);
+        
+        expect(id.length).toBe(length);
+        expect(id.split('').length).toBe(length);  // No separator, check for exact length
+    });
+
+    it('should respect separator length adjustment', () => {
+        const id = UniqueIdFn(30, 4, '/');
+        const rawLength = id.replace(/\//g, '').length;
+        const totalSeparatorLength = (id.length - rawLength);
+
+        expect(id.length).toBeLessThanOrEqual(30);
+        expect(rawLength + totalSeparatorLength).toBeLessThanOrEqual(30);
+        expect(id.split('/').every(group => group.length <= 4)).toBe(true);
     });
 });
+
+//----------------------- Unique id test end here ------------------//

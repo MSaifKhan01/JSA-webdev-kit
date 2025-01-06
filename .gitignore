@@ -5,5 +5,5 @@ dist/
 .DS_Store
 coverage/
 *.lock
-
+index.js
 
