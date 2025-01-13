@@ -1,37 +1,4 @@
 
-//-------------UniqId----------------//
-
-// export function UniqueIdFn(length: number = 20, groupLength: number = 4): string {
-//     if (typeof length !== 'number' || length <= 0) {
-//         throw new Error("The length parameter must be a positive number.");
-//     }
-
-//     const formatId = (id: string, groupLength: number): string => {
-//         const regex = new RegExp(`.{1,${groupLength}}`, 'g');
-//         return id.match(regex)?.join('-') || '';
-//     };
-
-//     const generateRandomId = (): string => {
-//         const hyphenCount = Math.floor((length - 1) / (groupLength + 1));
-//         const rawLength = length - hyphenCount;
-
-//         let date = Date.now().toString(36);
-//         let random = Math.random().toString(36).substr(2, rawLength - date.length);
-//         let rawId = (date + random).substring(0, rawLength);
-
-//         while (rawId.length < rawLength) {
-//             rawId += Math.random().toString(36).substr(2, rawLength - rawId.length);
-//         }
-
-//         const formattedId = formatId(rawId, groupLength);
-//         return formattedId.substring(0, length);
-//     };
-
-//     return generateRandomId();
-// }
-
-
-
 
 //-------------UniqId----------------//
 
@@ -132,19 +99,131 @@ export function getFormattedDateTime(format: string = 'ISO'): string {
 }
 
 
-// console.log(getFormattedDateTime('ISO'));     // 2024-12-24T15:30:00.000Z
-// console.log(getFormattedDateTime('SHORT'));   // 12/24/2024
-// console.log(getFormattedDateTime('LONG'));    // Monday, December 24, 2024
-// console.log(getFormattedDateTime('24H'));     // 15:30
-// console.log(getFormattedDateTime('12H'));     // 03:30 PM
-// console.log(getFormattedDateTime('FULL'));    // Monday, December 24, 2024 15:30:00
-// console.log(getFormattedDateTime('UNIX'));    // 1703431800
-// console.log(getFormattedDateTime('CUSTOM'));  // 2024/12/24
-// console.log(getFormattedDateTime('DASH'));    // 24-12-2024
-// console.log(getFormattedDateTime('RFC'));     // Mon, 24 Dec 2024 15:30:00 GMT
-// console.log(getFormattedDateTime('HUMAN'));   // 12/24/2024, 3:30:00 PM
-// console.log(getFormattedDateTime('TIME'));    // 15:30:00
-// console.log(getFormattedDateTime('DATEONLY'));// 2024-12-24
-// console.log(getFormattedDateTime('DATETIME'));// 2024-12-24 15:30:00
 
 
+
+
+
+// const { OpenAI } = require('openai');
+
+// //-------------------Generative AI Agent--------------------//
+// export async function aiAgent(apiKey: string, userQuestion: string, defaultTemplate?: string): Promise<string> {
+//     // Validate inputs
+//     if (!apiKey) {
+//         throw new Error("API key is required.");
+//     }
+
+//     if (!userQuestion) {
+//         throw new Error("userQuestion is required.");
+//     }
+
+//     // Build the readyTemplate
+//     const readyTemplate = `
+//     Question: ${userQuestion}
+//     ${defaultTemplate || `
+//     You are a mentor who provides clear, detailed, and structured answers. Always respond in the following format:
+//     - **Introduction:** Start with a brief introduction to the topic.
+//     - **Definition:** Provide a concise definition or explanation.
+//     - **Details/Types:** If applicable, provide more details, including types or variations.
+//     - **Examples/Applications:** Share practical examples or real-world applications.
+//     - **Summary:** End with a short, user-friendly summary.
+
+//     If the question does not fit this format, adapt your response accordingly while maintaining clarity and depth.
+//     `}
+//     `;
+
+//     // Initialize OpenAI client
+//     const openai = new OpenAI({ apiKey });
+
+//     try {
+//         // Generate a response from OpenAI
+//         const response = await openai.chat.completions.create({
+//             model: "gpt-3.5-turbo",
+//             messages: [
+//                 { role: "system", content: "You are a helpful and structured mentor." },
+//                 { role: "user", content: readyTemplate }
+//             ],
+//             max_tokens: 300,
+//             temperature: 0.7,
+//         });
+
+//         // Extract and return the response content
+//         return response.choices?.[0]?.message?.content?.trim() || "No response generated.";
+//     } catch (error) {
+//         console.error("Error in AI Agent:", error);
+//         throw new Error("Failed to generate AI response.");
+//     }
+// }
+
+
+
+
+
+
+const { OpenAI } = require('openai');
+
+//-------------------Generative AI Agent--------------------//
+export async function aiAgent(
+    apiKey: string,
+    userQuestion: string,
+    defaultTemplate?: string,
+    model: string = "gpt-3.5-turbo",
+    maxTokens: number = 300,
+    temperature: number = 0.7
+): Promise<string> {
+    // Validate inputs
+    if (!apiKey) {
+        throw new Error("API key is required.");
+    }
+
+    if (typeof userQuestion !== "string" || userQuestion.trim().length === 0) {
+        throw new Error("Valid userQuestion is required.");
+    }
+
+    if (maxTokens <= 0) {
+        throw new Error("maxTokens must be a positive number.");
+    }
+
+    if (temperature < 0 || temperature > 1) {
+        throw new Error("Temperature must be between 0 and 1.");
+    }
+
+    // Build the readyTemplate
+    const templateToUse = defaultTemplate || `
+    You are a mentor who provides clear, detailed, and structured answers. Always respond in the following format:
+    - **Introduction:** Start with a brief introduction to the topic.
+    - **Definition:** Provide a concise definition or explanation.
+    - **Details/Types:** If applicable, provide more details, including types or variations.
+    - **Examples/Applications:** Share practical examples or real-world applications.
+    - **Summary:** End with a short, user-friendly summary.
+
+    If the question does not fit this format, adapt your response accordingly while maintaining clarity and depth.
+    `;
+
+    const readyTemplate = `
+    Question: ${userQuestion}
+    ${templateToUse}
+    `.trim();
+
+    // Initialize OpenAI client
+    const openai = new OpenAI({ apiKey });
+
+    try {
+        // Generate a response from OpenAI
+        const response = await openai.chat.completions.create({
+            model,
+            messages: [
+                { role: "system", content: "You are a helpful and structured mentor." },
+                { role: "user", content: readyTemplate }
+            ],
+            max_tokens: maxTokens,
+            temperature,
+        });
+
+        // Extract and return the response content
+        return response.choices?.[0]?.message?.content?.trim() || "No response generated.";
+    } catch (error) {
+        console.error("Error in AI Agent:", error);
+        throw new Error(`Failed to generate AI response: ${error.message}`);
+    }
+}
