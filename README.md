@@ -72,22 +72,26 @@ Formats the current date and time into various styles for different use cases.
 
 - **`format`** (optional, `string`, default: `'ISO'`): Specifies the desired format for the date and time.
 
+
 #### Available Format Options
 
-| **Format**    | **Description**                                                  | **Example**                  |
-|---------------|------------------------------------------------------------------|------------------------------|
-| `'ISO'`       | ISO-8601 format.                                                | `2025-01-13T15:30:45.123Z`  |
-| `'short'`     | Short date format.                                              | `01/13/2025`                |
-| `'long'`      | Full date with weekday name.                                     | `Monday, January 13, 2025`  |
-| `'24h'`       | Military (24-hour) time.                                        | `15:30`                     |
-| `'12h'`       | 12-hour clock format with AM/PM.                                | `03:30 PM`                  |
-| `'full'`      | Full date and time in a human-readable format.                  | `Monday, January 13, 2025 15:30:45` |
-| `'unix'`      | Unix timestamp (seconds since epoch).                           | `1736814645`                |
-| `'custom'`    | Custom slash-separated format.                                  | `2025/01/13`                |
-| `'dash'`      | Dash-separated format.                                          | `13-01-2025`                |
-| `'rfc'`       | RFC-1123 format for email headers.                              | `Mon, 13 Jan 2025 15:30:45 GMT` |
-| `'human'`     | Localized human-readable format.                                | `1/13/2025, 3:30:45 PM`     |
-
+| **Format**      | **Description**                                                      | **Example**                    |
+|------------------|----------------------------------------------------------------------|--------------------------------|
+| `'ISO'` or `'standard'`  | ISO-8601 format.                                                      | `2025-01-13T15:30:45.123Z`    |
+| `'short'` or `'date'`    | Short date format.                                                    | `01/13/2025`                  |
+| `'long'` or `'fulldate'` | Full date with weekday name.                                           | `Monday, January 13, 2025`    |
+| `'24h'` or `'military'`  | Military (24-hour) time.                                              | `15:30`                       |
+| `'12h'` or `'clock'`     | 12-hour clock format with AM/PM.                                      | `03:30 PM`                    |
+| `'full'` or `'log'`      | Full date and time in a human-readable format.                        | `Monday, January 13, 2025 15:30:45` |
+| `'unix'` or `'epoch'`    | Unix timestamp (seconds since epoch).                                 | `1736814645`                  |
+| `'custom'` or `'slash'`  | Custom slash-separated format.                                        | `2025/01/13`                  |
+| `'dash'`                 | Dash-separated format.                                                | `13-01-2025`                  |
+| `'rfc'` or `'email'`     | RFC-1123 format for email headers.                                    | `Mon, 13 Jan 2025 15:30:45 GMT` |
+| `'human'`                | Localized human-readable format.                                      | `1/13/2025, 3:30:45 PM`       |
+| `'time'`                 | Only the time (HH:mm:ss).                                             | `15:30:45`                    |
+| `'dateonly'`             | Only the date in YYYY-MM-DD format.                                   | `2025-01-13`                  |
+| `'datetime'`             | Date and time in YYYY-MM-DD HH:mm:ss format.                          | `2025-01-13 15:30:45`         |
+| `default`                | Default format: YYYY-MM-DD HH:mm:ss.                                  | `2025-01-13 15:30:45`         |
 #### Example Usage
 
 ```javascript
