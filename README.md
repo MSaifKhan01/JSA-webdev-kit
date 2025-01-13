@@ -197,7 +197,7 @@ AI Response:
 
 ## Contributing
 
-Feel free to contribute to this library by submitting issues or pull requests on the [GitHub repository](#).
+Feel free to contribute to this library by submitting issues or pull requests on the [GitHub repository](https://github.com/MSaifKhan01/JSA-webdev-kit).
 
 ---
 
