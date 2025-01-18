@@ -201,21 +201,6 @@ AI Response:
 
  
 ### 4. `Store Manager`
-The **Store Manager** is an integral part of this package that provides functionalities for managing application data storage. It is designed to handle backend data efficiently, making it easier to manage the data flow, retrieval, and updates. This manager ensures that all interactions with your data storage layer are streamlined and organized. For more details on how to use the Store Manager, follow the link below.
-
-### Features
-- Efficient data storage handling
-- Data caching
-- Easy integration with existing systems
-- Scalable and organized storage options for large applications
-
-### User Usage Guide:
-
-[**User Usage Guide here**](./UserGuide/Storage.md)
-
-For more details and usage, check out the full **Store Manager README** by following the link below:
-
-[**Store Manager README**](./UserGuide/Storage.md)### 4. `Store Manager`
 
 The **Store Manager** is a core feature of this package that simplifies the management of application data storage. Designed for efficient backend data handling, it facilitates seamless data flow, retrieval, and updates. This manager ensures that all interactions with your data storage layer are organized and streamlined, providing an optimized experience for developers.
 
