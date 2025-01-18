@@ -199,6 +199,30 @@ AI Response:
 ```
 ---
 
+
+---
+
+## Store Manager
+
+The **Store Manager** is an integral part of this package that provides functionalities for managing application data storage. It is designed to handle backend data efficiently, making it easier to manage the data flow, retrieval, and updates. This manager ensures that all interactions with your data storage layer are streamlined and organized. For more details on how to use the Store Manager, follow the link below.
+
+### Features
+- Efficient data storage handling
+- Data caching
+- Easy integration with existing systems
+- Scalable and organized storage options for large applications
+
+For more details and usage, check out the full **Store Manager README** by following the link below:
+
+[**Store Manager README**](./UserGuide/Storage.md)
+
+---
+
+## Connect with Me
+
+For collaboration, feedback, or inquiries, feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/mohd-saif-khan-3b4979202/).
+
+
 ## Contributing
 
 Feel free to contribute to this library by submitting issues or pull requests on the [GitHub repository](https://github.com/MSaifKhan01/JSA-webdev-kit).

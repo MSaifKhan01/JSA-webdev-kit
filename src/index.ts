@@ -227,3 +227,138 @@ export async function aiAgent(
         throw new Error(`Failed to generate AI response: ${error.message}`);
     }
 }
+
+
+
+
+// -------------- BackendStorageManager with Redis Client as Parameter (TypeScript) -------------- //
+
+export const backendStorageManager = {
+    /**
+     * Sets a key-value pair in Redis with an optional expiration time.
+     * Default expiry time is 3600 seconds (1 hour).
+     */
+    set: async (redisClient: any, key: string, value: any, expiryInSeconds: number | null = 3600): Promise<void> => {
+        try {
+            // Fetch existing data from Redis
+            const data = await redisClient.get(key);
+            let parsedData = data ? JSON.parse(data) : []; // If data exists, parse it; otherwise, initialize an empty array
+
+            // Make sure that parsedData is an array before using push
+            if (!Array.isArray(parsedData)) {
+                parsedData = [];
+            }
+
+            // Always wrap the value in an array and then push it
+            parsedData.push(value);
+
+            // Serialize the updated array back to JSON format
+            const stringValue = JSON.stringify(parsedData);
+
+            // Set key in Redis with or without expiry time
+            if (expiryInSeconds) {
+                await redisClient.set(key, stringValue, 'EX', expiryInSeconds); // Set key with expiry
+            } else {
+                await redisClient.set(key, stringValue); // Set key without expiry
+            }
+        } catch (error) {
+            console.error('Error setting key in Redis:', error);
+            throw error; // Re-throw error for handling at a higher level
+        }
+    },
+
+    /**
+     * Retrieves a value from Redis by its key.
+     */
+    get: async (redisClient: any, key: string): Promise<any | null> => {
+        try {
+            const data = await redisClient.get(key); // Fetch the data from Redis
+            return data ? JSON.parse(data) : null; // Parse and return JSON data, or null if not found
+        } catch (error) {
+            console.error('Error getting key from Redis:', error);
+            return null; // Return null on error
+        }
+    },
+
+    /**
+     * Removes a key-value pair from Redis.
+     */
+    remove: async (redisClient: any, key: string): Promise<void> => {
+        try {
+            await redisClient.del(key); // Delete the key from Redis
+        } catch (error) {
+            console.error('Error removing key from Redis:', error);
+        }
+    },
+
+    /**
+     * Clears all keys and data in the Redis instance.
+     * WARNING: Use with caution as this will delete all data from Redis.
+     */
+    clearAll: async (redisClient: any): Promise<void> => {
+        try {
+            await redisClient.flushAll(); // Clear all keys and data from Redis
+        } catch (error) {
+            console.error('Error clearing all data in Redis:', error);
+        }
+    },
+};
+
+
+
+
+
+
+// -------------- Local Storage / Session Storage Manager -------------- //
+
+type StoreType = 'loc' | 'ses'; // Restrict storeType to only 'loc' or 'ses'
+
+export const storageManager = {
+    /**
+     * Sets a key-value pair with an optional expiry time.
+     * Default expiry time for local/session storage is 86400000ms (1 day).
+     */
+    set: (key: string, value: any, expiryInMs: number | null = 86400000, storeType: StoreType = 'loc'): void => {
+        const data = { value, expiry: expiryInMs ? Date.now() + expiryInMs : null };
+        if (storeType === 'ses') {
+            sessionStorage.setItem(key, JSON.stringify(data));
+        } else {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+    },
+
+    /**
+     * Retrieves a value from local/session storage by its key.
+     */
+    get: (key: string, storeType: StoreType = 'loc'): any | null => {
+        const storage = storeType === 'ses' ? sessionStorage : localStorage;
+        const data = JSON.parse(storage.getItem(key) as string);
+        if (!data) return null;
+
+        // Check for expiry
+        if (data.expiry && Date.now() > data.expiry) {
+            storage.removeItem(key); // Clean up expired data
+            return null;
+        }
+        return data.value;
+    },
+
+    /**
+     * Removes a key-value pair from local/session storage.
+     */
+    remove: (key: string, storeType: StoreType = 'loc'): void => {
+        const storage = storeType === 'ses' ? sessionStorage : localStorage;
+        storage.removeItem(key);
+    },
+
+    /**
+     * Clears all keys and data from local/session storage.
+     */
+    clearAll: (storeType: StoreType = 'loc'): void => {
+        if (storeType === 'ses') {
+            sessionStorage.clear();
+        } else {
+            localStorage.clear();
+        }
+    },
+};

@@ -1,12 +1,11 @@
 {
   "name": "jsa-webdev-kit",
-  "version": "1.3.5",
+  "version": "1.3.7",
   "description": "A simple utility for developer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
- 
     "test": "jest",
     "prepare": "npm run build"
   },
