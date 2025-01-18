@@ -1,6 +1,6 @@
 {
   "name": "jsa-webdev-kit",
-  "version": "1.3.7",
+  "version": "1.4.0",
   "description": "A simple utility for developer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,7 +27,13 @@
     "developer tools",
     "AI agent",
     "AI utilities",
-    "AI question answering"
+    "AI question answering",
+    "data caching",
+    "storage management",
+    "data storage",
+    "cache handling",
+    "scalable storage",
+    "cache optimization"
   ],
   "author": "Mohd Saif Khan",
   "license": "MIT",
